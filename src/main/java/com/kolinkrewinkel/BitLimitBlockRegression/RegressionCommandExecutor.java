@@ -1,11 +1,15 @@
 package com.kolinkrewinkel.BitLimitBlockRegression;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+
 public class RegressionCommandExecutor implements CommandExecutor {
+    private final BitLimitBlockRegression plugin;
 
     public RegressionCommandExecutor(BitLimitBlockRegression plugin) {
         this.plugin = plugin;
-
-        Bukkit.getPluginManager().registerEvents(this, this.plugin);
     }
     
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
