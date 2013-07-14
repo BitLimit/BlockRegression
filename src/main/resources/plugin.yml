@@ -1,0 +1,13 @@
+main: com.kolinkrewinkel.BitLimitBlockRegression.BitLimitBlockRegression
+name: BitLimitBlockRegression
+version: ${project.version}
+author: Kolin Krewinkel
+description: Configurably regrow any block on another.
+website: https://github.com/kolinkrewinkel/BitLimitBlockRegression/
+commands:
+    regression:
+        description: Basic commands for influencing how blocks are regrown.
+permissions:
+    regression.*:
+        description: Gives all permissions of the BitLimitBlockRegression plugin.
+        default: op
