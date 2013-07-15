@@ -70,7 +70,7 @@ public class BlockGrowthManager {
             }
 
             private void growCopyingFromLocationWithAttemptCount(Location location, Integer attemptCount) {
-                if (attemptCount > 3) {
+                if (attemptCount > 4) {
                     return;
                 }
 
