@@ -60,12 +60,39 @@ public class BlockGrowthManager {
                                 Location location = block.getLocation();
                                 Bukkit.broadcastMessage(ChatColor.GREEN + "Found match at (" + Integer.toString(location.getBlockX()) + ", " + Integer.toString(location.getBlockY()) + ", " + Integer.toString(location.getBlockZ()) + ")!");
 
-
+                                this.growCopyingFromLocationWithAttemptCount(block.getLocation(), 0);
                             } else {
 //                                Bukkit.broadcastMessage(ChatColor.RED + "No match found.");
                             }
                         }
                     }
+                }
+            }
+
+            private void growCopyingFromLocationWithAttemptCount(Location location, Integer attemptCount) {
+                if (attemptCount > 2) {
+                    return;
+                }
+
+                Block block = location.getBlock();
+                Material material = block.getType();
+                Random rand = new Random();
+                Integer indexOfOffset = rand.nextInt(2);
+                Integer offset = -1 + rand.nextInt(2);
+                Location expansionLocation = location.clone();
+
+                if (indexOfOffset == 0) {
+                    expansionLocation.setX(expansionLocation.getBlockX() + offset);
+                } else if (indexOfOffset == 1) {
+                    expansionLocation.setY(expansionLocation.getBlockY() + offset);
+                } else {
+                    expansionLocation.setZ(expansionLocation.getBlockZ() + offset);
+                }
+
+                if (expansionLocation.getBlock().getTypeId() == Material.AIR.getId()) {
+                    expansionLocation.getBlock().setType(material);
+                } else {
+                    this.growCopyingFromLocationWithAttemptCount(location, attemptCount + 1);
                 }
             }
         }
@@ -77,4 +104,7 @@ public class BlockGrowthManager {
         Random rand = new Random();
         return (rand.nextInt((int)likelihood * 100) == 0);
     }
+
+
 }
+
