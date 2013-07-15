@@ -35,7 +35,15 @@ public class BlockGrowthManager {
 
             @Override
             public void run() {
-                ArrayList<HashMap> conditionsList = (ArrayList<HashMap>) plugin.getConfig().get("conditions");
+
+                Object rawConditions = plugin.getConfig().get("conditions");
+                ArrayList<HashMap> conditionsList = null;
+
+                if (rawConditions != null) {
+                    conditionsList = (ArrayList<HashMap>)rawConditions;
+                }
+
+
                 if (conditionsList != null) {
 
                 } else {
