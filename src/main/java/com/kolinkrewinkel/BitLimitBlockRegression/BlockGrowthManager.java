@@ -70,7 +70,7 @@ public class BlockGrowthManager {
             }
 
             private void growCopyingFromLocationWithAttemptCount(Location location, Integer attemptCount) {
-                if (attemptCount > 2) {
+                if (attemptCount > 3) {
                     return;
                 }
 
@@ -91,6 +91,8 @@ public class BlockGrowthManager {
 
                 if (expansionLocation.getBlock().getTypeId() == Material.AIR.getId()) {
                     expansionLocation.getBlock().setType(material);
+
+                    Bukkit.broadcastMessage("Set block at location: " + expansionLocation.toString());
                 } else {
                     this.growCopyingFromLocationWithAttemptCount(location, attemptCount + 1);
                 }
