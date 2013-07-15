@@ -1,10 +1,11 @@
 package com.kolinkrewinkel.BitLimitBlockRegression;
 
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
+import org.bukkit.*;
+import org.bukkit.block.Block;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 /**
@@ -36,23 +37,40 @@ public class BlockGrowthManager {
             @Override
             public void run() {
 
-                Object rawConditions = plugin.getConfig().get("conditions");
-                ArrayList<HashMap> conditionsList = null;
-
-                if (rawConditions != null) {
-                    conditionsList = (ArrayList<HashMap>)rawConditions;
-                }
-
+                ArrayList<HashMap> conditionsList= (ArrayList<HashMap>) plugin.getConfig().getList("conditions");
 
                 if (conditionsList != null) {
+                    Iterator conditionsListIterator = conditionsList.iterator();
+                    while (conditionsListIterator.hasNext()) {
+                        HashMap<String, Object> growthCondition = (HashMap<String, Object>) conditionsListIterator.next();
+                        Material seedBlockMaterial = Material.getMaterial((Integer) growthCondition.get("seed"));
+                        World world = Bukkit.getWorld((String) growthCondition.get("world"));
 
-                } else {
-                    Bukkit.broadcastMessage(ChatColor.RED + "No conditions to grow were found.");
+                        Chunk[] chunks= world.getLoadedChunks();
+                        for (Chunk chunk : chunks) {
+                            Random random = new Random();
+                            int x = random.nextInt(16);
+                            int y = random.nextInt(256);
+                            int z = random.nextInt(16);
+
+                            Block block = chunk.getBlock(x, y, z);
+
+//                            Bukkit.broadcastMessage(seedBlockMaterial.toString());
+                            if (block.getType().getId() == seedBlockMaterial.getId()) {
+                                Location location = block.getLocation();
+                                Bukkit.broadcastMessage(ChatColor.GREEN + "Found match at (" + Integer.toString(location.getBlockX()) + ", " + Integer.toString(location.getBlockY()) + ", " + Integer.toString(location.getBlockZ()) + ")!");
+
+
+                            } else {
+//                                Bukkit.broadcastMessage(ChatColor.RED + "No match found.");
+                            }
+                        }
+                    }
                 }
             }
         }
 
-        Bukkit.getScheduler().runTaskTimer(this.plugin, new RepeatingGrowthTask(this.plugin), 20L, 0L);
+        Bukkit.getScheduler().runTaskTimer(this.plugin, new RepeatingGrowthTask(this.plugin), 0L, 20L);
     }
 
     boolean randomWithLikelihood(float likelihood) {

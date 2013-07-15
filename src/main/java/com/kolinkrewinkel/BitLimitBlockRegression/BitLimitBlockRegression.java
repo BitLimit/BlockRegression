@@ -5,11 +5,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class BitLimitBlockRegression extends JavaPlugin {
     public RegressionCommandExecutor commandExecutor;
+    public BlockGrowthManager blockGrowthManager;
 
     @Override
     public void onEnable() {
         this.commandExecutor = new RegressionCommandExecutor(this);
         this.getCommand("regression").setExecutor(this.commandExecutor);
+        this.blockGrowthManager = new BlockGrowthManager(this);
     }
 
     @Override
